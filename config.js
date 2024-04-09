@@ -7,7 +7,8 @@ const config = {
       user: dotenv.DB_USERNAME,
       password: dotenv.DB_PASSWORD,
       database: dotenv.DB_DATABASE,
-      port: '/var/run/mysqld/mysqld.sock'
+      port: dotenv.DB_PORT,
+      ssl: true
 //      timezone: '+02:00' //<-- here
     },
     listPerPage: 10,
