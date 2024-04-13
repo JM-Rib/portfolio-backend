@@ -1,8 +1,7 @@
 const cors = require('cors');
 const express = require("express");
-path = require('path');
-const dotenv = require('dotenv').config({ path: path.resolve("routes", '../.env') }).parsed;
 const helmet = require("helmet");
+require('dotenv').config();
 
 const corsOptions ={
 //    origin:'http://localhost:3000', 
@@ -11,7 +10,7 @@ const corsOptions ={
     optionSuccessStatus:200
 }
 const app = express();
-const port = dotenv.APP_PORT;
+const port = process.env.APP_PORT;
 const profilRouter = require("./routes/profil");
 const adminRouter = require("./routes/admin");
 const projetRouter = require("./routes/projet");
