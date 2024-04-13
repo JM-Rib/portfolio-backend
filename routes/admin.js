@@ -7,6 +7,7 @@ const dotenv = require('dotenv').config({ path: path.resolve("routes", '../.env'
 const JWT_SECRET = dotenv.JWT_SECRET; const JWT_EXPIRES_IN = dotenv.JWT_EXPIRES_IN;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { log } = require('console');
 
 /* GET Admin */
 router.get('/', async function(req, res, next) {
@@ -83,17 +84,17 @@ router.delete('/:id', async function(req, res, next) {
 /* Signup Admin */
 router.post('/signup/', async function(req, res, next) {
   try {
-    const identifiantAdmin = req.body.identifiantAdmin;
-    const mdpAdmin = req.body.mdpAdmin;
+    const identifiantAdmin = req.body.identifiant;
+    const mdpAdmin = req.body.mdp;
 
-    if (!identifiantAdmin || !mdpAdmin || identifiantAdmin==='' || mdpAdmin==='' ) {
+    if (!identifiantAdmin || !mdpAdmin || identifiantAdmin===undefined || mdpAdmin===undefined || identifiantAdmin==='' || mdpAdmin==='' ) {
       res.status(400).end();
     }
-  
     const hashedPassword = await bcrypt.hash(mdpAdmin, 8);
     const userData = {
       identifiantAdmin,
       mdpAdmin: hashedPassword,
+      fk_idProfil: req.body.fk_idProfil
     };
 
     const result = await admin.signup(userData);
@@ -109,9 +110,8 @@ router.post('/signup/', async function(req, res, next) {
 /* POST login Admin */
 router.post('/login/', async function(req, res, next) {
   try {
-    const identifiantAdmin = req.body.identifiantAdmin;
-    const mdpAdmin = req.body.mdpAdmin;
-    console.log('' + identifiantAdmin + mdpAdmin);
+    const identifiantAdmin = req.body.identifiant;
+    const mdpAdmin = req.body.mdp;
 
     if (!identifiantAdmin || !mdpAdmin || identifiantAdmin==='' || mdpAdmin==='' ) {
       res.status(403).end();
@@ -120,7 +120,7 @@ router.post('/login/', async function(req, res, next) {
     const result = await admin.login(req.body);
 
     /* on recup le mdp obtenu dans data, on le renomme, et on le compare a celui dans la base*/
-    const hashedPassword = result.data[0].mdpAdmin;
+    const hashedPassword = result.data[0].mdp;
     const isMatch = await bcrypt.compare(mdpAdmin, hashedPassword);
     if (!isMatch) {
       res.status(403).end();
