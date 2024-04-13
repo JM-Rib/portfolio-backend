@@ -12,7 +12,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM evoque WHERE fk_idTheme=?`,
+    `SELECT * FROM evoque WHERE fk_idTheme=$1`,
     [id]
   );
 
@@ -21,13 +21,13 @@ async function getOne(id){
 
 async function create(evoque){
   const result = await db.query(
-    `INSERT INTO evoque (fk_idTheme, fk_idArticle) VALUES (?, ?)`,
+    `INSERT INTO evoque (fk_idTheme, fk_idArticle) VALUES ($1, $2)`,
     [evoque.fk_idTheme, evoque.fk_idArticle]
   );
 
   let message = 'Error in creating evoque';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'evoque created successfully';
   }
 
@@ -36,13 +36,13 @@ async function create(evoque){
 
 async function update(id, evoque){
   const result = await db.query(
-    `UPDATE evoque SET evoque.fk_idTheme=?, evoque.fk_idArticle=? WHERE evoque.fk_idTheme = ?;`,
+    `UPDATE evoque SET evoque.fk_idTheme=$1, evoque.fk_idArticle=$2 WHERE evoque.fk_idTheme = $3;`,
     [evoque.fk_idTheme, evoque.fk_idArticle, id] 
   );
 
   let message = 'Error in updating evoque';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'evoque updated successfully';
   }
 
@@ -51,13 +51,13 @@ async function update(id, evoque){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM evoque WHERE fk_idTheme=?`,
+    `DELETE FROM evoque WHERE fk_idTheme=$1`,
     [id]
   );
 
   let message = 'Error in deleting evoque';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'evoque deleted successfully';
   }
 

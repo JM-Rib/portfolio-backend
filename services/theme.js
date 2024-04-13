@@ -12,7 +12,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM Theme WHERE pk_idTheme=?`,
+    `SELECT * FROM Theme WHERE pk_idTheme=$1`,
     [id]
   );
 
@@ -21,13 +21,13 @@ async function getOne(id){
 
 async function create(theme){
   const result = await db.query(
-    `INSERT INTO Theme (theme) VALUES (?)`,
+    `INSERT INTO Theme (theme) VALUES ($1)`,
     [theme.theme]
   );
 
   let message = 'Error in creating theme';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'theme created successfully';
   }
 
@@ -36,13 +36,13 @@ async function create(theme){
 
 async function update(id, theme){
   const result = await db.query(
-    `UPDATE Theme SET Theme.pk_idTheme=?, Theme.theme=? WHERE Theme.pk_idTheme = ?;`,
+    `UPDATE Theme SET Theme.pk_idTheme=$1, Theme.theme=$2 WHERE Theme.pk_idTheme = $3;`,
     [theme.pk_idTheme, theme.theme, id] 
   );
 
   let message = 'Error in updating theme';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'theme updated successfully';
   }
 
@@ -51,13 +51,13 @@ async function update(id, theme){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM Theme WHERE pk_idTheme=?`,
+    `DELETE FROM Theme WHERE pk_idTheme=$1`,
     [id]
   );
 
   let message = 'Error in deleting theme';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'theme deleted successfully';
   }
 

@@ -12,7 +12,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM problematique WHERE fk_idTheme=?`,
+    `SELECT * FROM problematique WHERE fk_idTheme=$1`,
     [id]
   );
 
@@ -21,13 +21,13 @@ async function getOne(id){
 
 async function create(problematique){
   const result = await db.query(
-    `INSERT INTO problematique (fk_idTheme, fk_idProjet) VALUES (?, ?)`,
+    `INSERT INTO problematique (fk_idTheme, fk_idProjet) VALUES ($1, $2)`,
     [problematique.fk_idTheme, problematique.fk_idProjet]
   );
 
   let message = 'Error in creating problematique';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'problematique created successfully';
   }
 
@@ -36,13 +36,13 @@ async function create(problematique){
 
 async function update(id, problematique){
   const result = await db.query(
-    `UPDATE problematique SET problematique.fk_idTheme=?, problematique.fk_idProjet=? WHERE problematique.fk_idTheme = ?;`,
+    `UPDATE problematique SET problematique.fk_idTheme=$1, problematique.fk_idProjet=$2 WHERE problematique.fk_idTheme = $3;`,
     [problematique.fk_idTheme, problematique.fk_idProjet, id] 
   );
 
   let message = 'Error in updating problematique';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'problematique updated successfully';
   }
 
@@ -51,13 +51,13 @@ async function update(id, problematique){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM problematique WHERE fk_idTheme=?`,
+    `DELETE FROM problematique WHERE fk_idTheme=$1`,
     [id]
   );
 
   let message = 'Error in deleting problematique';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'problematique deleted successfully';
   }
 

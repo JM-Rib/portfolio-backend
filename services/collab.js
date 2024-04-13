@@ -12,7 +12,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM collab WHERE fk_idProjet=?`,
+    `SELECT * FROM collab WHERE fk_idProjet=$1`,
     [id]
   );
 
@@ -21,13 +21,13 @@ async function getOne(id){
 
 async function create(collab){
   const result = await db.query(
-    `INSERT INTO collab (fk_idProjet, fk_idProfil) VALUES (?, ?)`,
+    `INSERT INTO collab (fk_idProjet, fk_idProfil) VALUES ($1, $2)`,
     [collab.fk_idProjet, collab.fk_idProfil]
   );
 
   let message = 'Error in creating collab';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'collab created successfully';
   }
 
@@ -36,13 +36,13 @@ async function create(collab){
 
 async function update(id, collab){
   const result = await db.query(
-    `UPDATE collab SET collab.fk_idProjet=?, collab.fk_idProfil=? WHERE collab.fk_idProjet = ?;`,
+    `UPDATE collab SET collab.fk_idProjet=$1, collab.fk_idProfil=$2 WHERE collab.fk_idProjet = $3;`,
     [collab.fk_idProjet, collab.fk_idProfil, id] 
   );
 
   let message = 'Error in updating collab';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'collab updated successfully';
   }
 
@@ -51,13 +51,13 @@ async function update(id, collab){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM collab WHERE fk_idProjet=?`,
+    `DELETE FROM collab WHERE fk_idProjet=$1`,
     [id]
   );
 
   let message = 'Error in deleting collab';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'collab deleted successfully';
   }
 

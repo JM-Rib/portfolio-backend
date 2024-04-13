@@ -12,7 +12,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM constitue WHERE pk_idConstitue=?`,
+    `SELECT * FROM constitue WHERE pk_idConstitue=$1`,
     [id]
   );
 
@@ -21,13 +21,13 @@ async function getOne(id){
 
 async function create(constitue){
   const result = await db.query(
-    `INSERT INTO constitue (fk_idConstitue, fk_idArticle, fk_idMedia, fk_idParagraphe) VALUES (?, ?, ?, ?)`,
+    `INSERT INTO constitue (fk_idConstitue, fk_idArticle, fk_idMedia, fk_idParagraphe) VALUES ($1, $2, $3, $4)`,
     [constitue.fk_idConstitue, constitue.fk_idArticle, constitue.fk_idMedia, constitue.fk_idParagraphe]
   );
 
   let message = 'Error in creating constitue';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'constitue created successfully';
   }
 
@@ -36,13 +36,13 @@ async function create(constitue){
 
 async function update(id, constitue){
   const result = await db.query(
-    `UPDATE constitue SET constitue.pk_idConstitue=?, constitue.fk_idConstitue=?, constitue.fk_idArticle=?, constitue.fk_idMedia=?, constitue.fk_idParagraphe=? WHERE constitue.pk_idConstitue = ?;`,
+    `UPDATE constitue SET constitue.pk_idConstitue=$1, constitue.fk_idConstitue=$2, constitue.fk_idArticle=$3, constitue.fk_idMedia=$4, constitue.fk_idParagraphe=$5 WHERE constitue.pk_idConstitue = $6;`,
     [constitue.pk_idConstitue, constitue.fk_idConstitue, constitue.fk_idArticle, constitue.fk_idMedia, constitue.fk_idParagraphe, id] 
   );
 
   let message = 'Error in updating constitue';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'constitue updated successfully';
   }
 
@@ -51,13 +51,13 @@ async function update(id, constitue){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM constitue WHERE pk_idConstitue=?`,
+    `DELETE FROM constitue WHERE pk_idConstitue=$1`,
     [id]
   );
 
   let message = 'Error in deleting constitue';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'constitue deleted successfully';
   }
 

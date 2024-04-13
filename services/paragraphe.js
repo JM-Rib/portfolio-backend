@@ -12,7 +12,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM Paragraphe WHERE pk_idParagraphe=?`,
+    `SELECT * FROM Paragraphe WHERE pk_idParagraphe=$1`,
     [id]
   );
 
@@ -21,13 +21,13 @@ async function getOne(id){
 
 async function create(paragraphe){
   const result = await db.query(
-    `INSERT INTO Paragraphe (contenu) VALUES (?)`,
+    `INSERT INTO Paragraphe (contenu) VALUES ($1)`,
     [paragraphe.contenu]
   );
 
   let message = 'Error in creating paragraphe';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'paragraphe created successfully';
   }
 
@@ -36,13 +36,13 @@ async function create(paragraphe){
 
 async function update(id, paragraphe){
   const result = await db.query(
-    `UPDATE Paragraphe SET Paragraphe.pk_idParagraphe=?, Paragraphe.contenu=? WHERE Paragraphe.pk_idParagraphe = ?;`,
+    `UPDATE Paragraphe SET Paragraphe.pk_idParagraphe=$1, Paragraphe.contenu=$2 WHERE Paragraphe.pk_idParagraphe = $3;`,
     [paragraphe.pk_idParagraphe, paragraphe.contenu, id] 
   );
 
   let message = 'Error in updating paragraphe';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'paragraphe updated successfully';
   }
 
@@ -51,13 +51,13 @@ async function update(id, paragraphe){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM Paragraphe WHERE pk_idParagraphe=?`,
+    `DELETE FROM Paragraphe WHERE pk_idParagraphe=$1`,
     [id]
   );
 
   let message = 'Error in deleting paragraphe';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'paragraphe deleted successfully';
   }
 

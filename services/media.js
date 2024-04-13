@@ -12,7 +12,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM Media WHERE pk_idMedia=?`,
+    `SELECT * FROM Media WHERE pk_idMedia=$1`,
     [id]
   );
 
@@ -21,13 +21,13 @@ async function getOne(id){
 
 async function create(media){
   const result = await db.query(
-    `INSERT INTO Media (cheminFichier) VALUES (?)`,
+    `INSERT INTO Media (cheminFichier) VALUES ($1)`,
     [media.cheminFichier]
   );
 
   let message = 'Error in creating media';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'media created successfully';
   }
 
@@ -36,13 +36,13 @@ async function create(media){
 
 async function update(id, media){
   const result = await db.query(
-    `UPDATE Media SET Media.pk_idMedia=?, Media.cheminFichier=? WHERE Media.pk_idMedia = ?;`,
+    `UPDATE Media SET Media.pk_idMedia=$1, Media.cheminFichier=$2 WHERE Media.pk_idMedia = $3;`,
     [media.pk_idMedia, media.cheminFichier, id] 
   );
 
   let message = 'Error in updating media';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'media updated successfully';
   }
 
@@ -51,13 +51,13 @@ async function update(id, media){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM Media WHERE pk_idMedia=?`,
+    `DELETE FROM Media WHERE pk_idMedia=$1`,
     [id]
   );
 
   let message = 'Error in deleting media';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'media deleted successfully';
   }
 

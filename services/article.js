@@ -12,7 +12,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM Article WHERE pk_idArticle=?`,
+    `SELECT * FROM Article WHERE pk_idArticle=$1`,
     [id]
   );
 
@@ -21,13 +21,13 @@ async function getOne(id){
 
 async function create(article){
   const result = await db.query(
-    `INSERT INTO Article (nomArticle, fk_idAdmin) VALUES (?, ?)`,
+    `INSERT INTO Article (nomArticle, fk_idAdmin) VALUES ($1, $2)`,
     [article.nomArticle, article.fk_idAdmin]
   );
 
   let message = 'Error in creating article';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'article created successfully';
   }
 
@@ -36,13 +36,13 @@ async function create(article){
 
 async function update(id, article){
   const result = await db.query(
-    `UPDATE Article SET Article.pk_idArticle=?, Article.nomArticle=?, Article.fk_idAdmin=? WHERE Article.pk_idArticle = ?;`,
+    `UPDATE Article SET Article.pk_idArticle=$1, Article.nomArticle=$2, Article.fk_idAdmin=$3 WHERE Article.pk_idArticle = $4;`,
     [article.pk_idArticle, article.nomArticle, article.fk_idAdmin, id] 
   );
 
   let message = 'Error in updating article';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'article updated successfully';
   }
 
@@ -51,13 +51,13 @@ async function update(id, article){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM Article WHERE pk_idArticle=?`,
+    `DELETE FROM Article WHERE pk_idArticle=$1`,
     [id]
   );
 
   let message = 'Error in deleting article';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'article deleted successfully';
   }
 

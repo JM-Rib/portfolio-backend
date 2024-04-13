@@ -25,7 +25,7 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM Admin WHERE pk_idAdmin=?`,
+    `SELECT * FROM Admin WHERE pk_idAdmin=$1`,
     [id]  );
   const data = helper.emptyOrRows(rows);
 
@@ -36,12 +36,12 @@ async function getOne(id){
 
 async function create(admin){
   const result = await db.query(
-    `INSERT INTO Admin (identifiant, mdp, fk_idProfil) VALUES (?, ?, ?)`,
+    `INSERT INTO Admin (identifiant, mdp, fk_idProfil) VALUES ($1, $2, $3)`,
     [admin.identifiant, admin.mdp, admin.fk_idProfil]  );
 
   let message = 'Error in creating admin';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'admin created successfully';
   }
   return {message};
@@ -49,13 +49,13 @@ async function create(admin){
 
 async function update(id, admin){
   const result = await db.query(
-    `UPDATE Admin SET Admin.pk_idAdmin=?, Admin.identifiant=?, Admin.mdp=?, Admin.fk_idProfil=? WHERE Admin.pk_idAdmin = ?;` ,
+    `UPDATE Admin SET Admin.pk_idAdmin=$1, Admin.identifiant=$2, Admin.mdp=$3, Admin.fk_idProfil=$4 WHERE Admin.pk_idAdmin = $5;` ,
     [admin.pk_idAdmin, admin.identifiant, admin.mdp, admin.fk_idProfil, id]  
   );
 
   let message = 'Error in updating admin';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'admin updated successfully';
   }
 
@@ -64,13 +64,13 @@ async function update(id, admin){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM Admin WHERE pk_idAdmin=?`,
+    `DELETE FROM Admin WHERE pk_idAdmin=$1`,
     [id]
   );
 
   let message = 'Error in deleting admin';
 
-  if (result.affectedRows) {
+  if (result) {
     message = 'admin deleted successfully';
   }
 
@@ -79,7 +79,7 @@ async function remove(id){
 
 async function signup(admin){
   const rows = await db.query(
-    `INSERT INTO Admin (identifiant, mdp) VALUES (?, ?)`,
+    `INSERT INTO Admin (identifiant, mdp) VALUES ($1, $2)`,
     [admin.identifiant, admin.mdp]  );
   const data = helper.emptyOrRows(rows);
 
@@ -90,7 +90,7 @@ async function signup(admin){
 
 async function login(admin){
   const rows = await db.query(
-    `SELECT * FROM Admin WHERE Admin.identifiant=?`,
+    `SELECT * FROM Admin WHERE Admin.identifiant=$1`,
     [admin.identifiant]  );
   const data = helper.emptyOrRows(rows);
   
@@ -101,7 +101,7 @@ async function login(admin){
 
 async function verifyToken(admin){ //ou "decoded"
   const rows = await db.query(
-    `SELECT * FROM Admin WHERE Admin.identifiant=?`,
+    `SELECT * FROM Admin WHERE Admin.identifiant=$1`,
     [admin.identifiant]    );
   const data = helper.emptyOrRows(rows);
   
