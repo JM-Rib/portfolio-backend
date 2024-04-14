@@ -22,6 +22,16 @@ router.get('/:id', async function(req, res, next) {
   }
 });
 
+/* GET Projet spécifique*/
+router.get('/info/:id', async function(req, res, next) {
+  try {
+    res.json(await projet.getInfo(parseInt(req.params.id), req.body.fk_idLangue));
+  } catch (err) {
+    console.error(`Error while getting Projet`, err.message);
+    next(err);
+  }
+});
+
 /* POST Projet */
 router.post('/', async function(req, res, next) {
   try {

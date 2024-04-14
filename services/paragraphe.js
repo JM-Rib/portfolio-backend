@@ -21,8 +21,8 @@ async function getOne(id){
 
 async function create(paragraphe){
   const result = await db.query(
-    `INSERT INTO Paragraphe (contenu) VALUES ($1)`,
-    [paragraphe.contenu]
+    `INSERT INTO Paragraphe (contenu, fk_idLangue) VALUES ($1, $2)`,
+    [paragraphe.contenu, paragraphe.fk_idLangue]
   );
 
   let message = 'Error in creating paragraphe';
