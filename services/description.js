@@ -12,17 +12,17 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM Description WHERE pk_idDescription=$1`,
-    [id]
+    `SELECT * FROM Description WHERE fk_idProjet=$1 AND fk_idLangue=$2`,
+    [id.fk_idProjet, id.fk_idLangue]
   );
 
   return helper.emptyOrRows(rows);
 }
 
-async function create(description){
+async function create(id, description){
   const result = await db.query(
-    `INSERT INTO Description (description, fk_idLangue) VALUES ($1, $2)`,
-    [description.description, description.fk_idLangue]
+    `INSERT INTO Description (fk_idProjet, fk_idLangue, description) VALUES ($1, $2, $3)`,
+    [id.fk_idProjet, id.fk_idLangue, description.description ]
   );
 
   let message = 'Error in creating description';
@@ -36,8 +36,8 @@ async function create(description){
 
 async function update(id, description){
   const result = await db.query(
-    `UPDATE Description SET Description.pk_idDescription=$1, Description.description=$2, Description.fk_idLangue=$3 WHERE Description.pk_idDescription = $4;`,
-    [description.pk_idDescription, description.description, description.fk_idLangue, id] 
+    `UPDATE Description SET Description.fk_idProjet=$1, Description.fk_idLangue=$2, Description.description=$3 WHERE Description.fk_idProjet=$4 AND Description.fk_idLangue=$5;`,
+    [description.pk_idDescription, description.fk_idLangue, description.description, id.fk_idProjet, id.fk_idLangue] 
   );
 
   let message = 'Error in updating description';
@@ -51,8 +51,8 @@ async function update(id, description){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM Description WHERE pk_idDescription=$1`,
-    [id]
+    `DELETE FROM Description WHERE fk_idProjet=$1 AND fk_idLangue=$2`,
+    [id.fk_idProjet, id.fk_idLangue]
   );
 
   let message = 'Error in deleting description';

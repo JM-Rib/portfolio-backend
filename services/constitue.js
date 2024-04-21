@@ -21,8 +21,8 @@ async function getOne(id){
 
 async function create(constitue){
   const result = await db.query(
-    `INSERT INTO constitue (fk_idConstitue, fk_idArticle, fk_idMedia, fk_idParagraphe) VALUES ($1, $2, $3, $4)`,
-    [constitue.fk_idConstitue, constitue.fk_idArticle, constitue.fk_idMedia, constitue.fk_idParagraphe]
+    `INSERT INTO constitue (fk_idConstitue, fk_idArticle, fk_idMedia) VALUES ($1, $2, $3)`,
+    [constitue.fk_idConstitue, constitue.fk_idArticle, constitue.fk_idMedia]
   );
 
   let message = 'Error in creating constitue';
@@ -36,8 +36,8 @@ async function create(constitue){
 
 async function update(id, constitue){
   const result = await db.query(
-    `UPDATE constitue SET constitue.pk_idConstitue=$1, constitue.fk_idConstitue=$2, constitue.fk_idArticle=$3, constitue.fk_idMedia=$4, constitue.fk_idParagraphe=$5 WHERE constitue.pk_idConstitue = $6;`,
-    [constitue.pk_idConstitue, constitue.fk_idConstitue, constitue.fk_idArticle, constitue.fk_idMedia, constitue.fk_idParagraphe, id] 
+    `UPDATE constitue SET constitue.pk_idConstitue=$1, constitue.fk_idConstitue=$2, constitue.fk_idArticle=$3, constitue.fk_idMedia=$4 WHERE constitue.pk_idConstitue = $5;`,
+    [constitue.pk_idConstitue, constitue.fk_idConstitue, constitue.fk_idArticle, constitue.fk_idMedia, id] 
   );
 
   let message = 'Error in updating constitue';

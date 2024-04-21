@@ -21,8 +21,8 @@ async function getOne(id){
 
 async function create(article){
   const result = await db.query(
-    `INSERT INTO Article (nomArticle, fk_idAdmin) VALUES ($1, $2)`,
-    [article.nomArticle, article.fk_idAdmin]
+    `INSERT INTO Article (fk_idAdmin) VALUES ($1)`,
+    [article.fk_idAdmin]
   );
 
   let message = 'Error in creating article';
@@ -36,8 +36,8 @@ async function create(article){
 
 async function update(id, article){
   const result = await db.query(
-    `UPDATE Article SET Article.pk_idArticle=$1, Article.nomArticle=$2, Article.fk_idAdmin=$3 WHERE Article.pk_idArticle = $4;`,
-    [article.pk_idArticle, article.nomArticle, article.fk_idAdmin, id] 
+    `UPDATE Article SET Article.pk_idArticle=$1, Article.fk_idAdmin=$2 WHERE Article.pk_idArticle = $3;`,
+    [article.pk_idArticle, article.fk_idAdmin, id] 
   );
 
   let message = 'Error in updating article';

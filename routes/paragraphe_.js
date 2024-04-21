@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const paragraphe= require("../services/paragraphe");
+const paragraphe = require("../services/paragraphe");
 
 /* GET Paragraphe */
 router.get('/', async function(req, res, next) {
@@ -13,16 +13,16 @@ router.get('/', async function(req, res, next) {
 });
 
 /* GET Paragraphe spécifique*/
-router.get('/:id&lang=:lang', async function(req, res, next) {
+router.get('/:id', async function(req, res, next) {
   try {
-    res.json(await paragraphe.getOne({fk_idConstitue : req.params.id, fk_idLangue: req.params.lang}));
+    res.json(await paragraphe.getOne(req.params.id));
   } catch (err) {
     console.error(`Error while getting Paragraphe`, err.message);
     next(err);
   }
 });
 
-/* POST Theme */
+/* POST Paragraphe */
 router.post('/', async function(req, res, next) {
   try {
     res.json(await paragraphe.create(req.body));
@@ -33,9 +33,9 @@ router.post('/', async function(req, res, next) {
 });
 
 /* PUT Paragraphe */
-router.put('/:id&lang=:lang', async function(req, res, next) {
+router.put('/:id', async function(req, res, next) {
   try {
-    res.json(await paragraphe.update({fk_idConstitue : req.params.id, fk_idLangue: req.params.lang}, req.body));
+    res.json(await paragraphe.update(req.params.id, req.body));
   } catch (err) {
     console.error(`Error while updating Paragraphe`, err.message);
     next(err);
@@ -43,9 +43,9 @@ router.put('/:id&lang=:lang', async function(req, res, next) {
 });
 
 /* DELETE Paragraphe */
-router.delete('/:id&lang=:lang', async function(req, res, next) {
+router.delete('/:id', async function(req, res, next) {
   try {
-    res.json(await paragraphe.remove({fk_idConstitue : req.params.id, fk_idLangue: req.params.lang}));
+    res.json(await paragraphe.remove(req.params.id));
   } catch (err) {
     console.error(`Error while deleting Paragraphe`, err.message);
     next(err);

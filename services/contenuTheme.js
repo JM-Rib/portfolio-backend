@@ -3,7 +3,7 @@ const helper = require('../helper');
 
 async function getMultiple(){
   const rows = await db.query(
-    `SELECT * FROM Theme`,
+    `SELECT * FROM ContenuTheme`,
     []
   );
 
@@ -12,17 +12,17 @@ async function getMultiple(){
 
 async function getOne(id){
   const rows = await db.query(
-    `SELECT * FROM Theme WHERE pk_idTheme=$1`,
-    [id]
+    `SELECT * FROM ContenuTheme WHERE fk_idTheme=$1 AND fk_idLangue=$2`,
+    [id.fk_idTheme, id.fk_idLangue]
   );
 
   return helper.emptyOrRows(rows);
 }
 
-async function create(){
+async function create(contenuTheme){
   const result = await db.query(
-    `INSERT INTO Theme () VALUES ()`,
-    []
+    `INSERT INTO ContenuTheme (fk_idTheme, fk_idLangue, contenuTheme) VALUES ($1, $2, $3)`,
+    [contenuTheme.fk_idTheme, contenuTheme.fk_idLangue, contenuTheme.contenuTheme]
   );
 
   let message = 'Error in creating theme';
@@ -34,10 +34,10 @@ async function create(){
   return {message};
 }
 
-async function update(id, theme){
+async function update(id, contenuTheme){
   const result = await db.query(
-    `UPDATE Theme SET Theme.pk_idTheme=$1 WHERE Theme.pk_idTheme = $2;`,
-    [theme.pk_idTheme, id] 
+    `UPDATE ContenuTheme SET ContenuTheme.fk_idTheme=$1, ContenuTheme.fk_idLangue=$2, ContenuTheme.contenuTheme=$3 WHERE ContenuTheme.fk_idTheme=$4 AND ContenuTheme.fk_idLangue=$5;`,
+    [contenuTheme.fk_idTheme, contenuTheme.fk_idLangue, contenuTheme.contenuTheme, id.fk_idTheme, id.fk_idLangue] 
   );
 
   let message = 'Error in updating theme';
@@ -51,8 +51,8 @@ async function update(id, theme){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM Theme WHERE pk_idTheme=$1`,
-    [id]
+    `DELETE FROM ContenuTheme WHERE fk_idTheme=$1 AND fk_idLangue=$2`,
+    [id.fk_idTheme, id.fk_idLangue]
   );
 
   let message = 'Error in deleting theme';

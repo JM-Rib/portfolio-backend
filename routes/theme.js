@@ -25,7 +25,7 @@ router.get('/:id', async function(req, res, next) {
 /* POST Theme */
 router.post('/', async function(req, res, next) {
   try {
-    res.json(await theme.create(req.body));
+    res.json(await theme.create());
   } catch (err) {
     console.error(`Error while creating Theme`, err.message);
     next(err);
