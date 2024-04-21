@@ -21,7 +21,7 @@ async function getOne(id){
 
 async function getInfo(id, fk_idLangue){
   const rows = await db.query(
-    `SELECT Projet.nomProjet, Description.description, Projet.dateDebutProjet, Projet.dateDerniereMaj, Projet.idGithub, Projet.lienHosting FROM Projet LEFT JOIN Description ON Projet.fk_idDescription=Description.pk_idDescription WHERE Projet.pk_idProjet=$1 AND Description.fk_idLangue=$2`,
+    `SELECT P.*, D.description, array_agg(CT.contenuTheme) AS Themes FROM Projet P LEFT JOIN Description D ON P.pk_idProjet = D.fk_idProjet LEFT JOIN problematique PR ON P.pk_idProjet = PR.fk_idProjet LEFT JOIN ContenuTheme CT ON PR.fk_idTheme = CT.fk_idTheme WHERE P.pk_idProjet=$1 AND D.fk_idLangue=$2 AND CT.fk_idLangue=$2 GROUP BY P.pk_idProjet, D.description;`,
     [id, fk_idLangue]
   );
 
@@ -77,6 +77,7 @@ module.exports = {
   getMultiple,
   getOne,
   getInfo,
+  getInfos,
   create,
   update,
   remove
