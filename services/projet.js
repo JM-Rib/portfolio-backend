@@ -30,7 +30,7 @@ async function getInfo(id, fk_idLangue){
 
 async function create(projet){
   const result = await db.query(
-    `INSERT INTO Projet (nomProjet, dateDebutProjet, dateDerniereMaj, idGithub, lienHosting, fk_idDescription) VALUES ($1, $2, $3, $4, $5)`,
+    `INSERT INTO Projet (nomProjet, dateDebutProjet, dateDerniereMaj, idGithub, lienHosting) VALUES ($1, $2, $3, $4, $5)`,
     [projet.nomProjet, projet.dateDebutProjet, projet.dateDerniereMaj, projet.idGithub, projet.lienHosting ]
   );
 
