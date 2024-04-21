@@ -21,7 +21,7 @@ async function getOne(id){
 
 async function create(){
   const result = await db.query(
-    `INSERT INTO Theme () VALUES ()`,
+    `INSERT INTO Theme DEFAULT VALUES`,
     []
   );
 

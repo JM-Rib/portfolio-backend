@@ -19,10 +19,10 @@ async function getOne(id){
   return helper.emptyOrRows(rows);
 }
 
-async function create(id, description){
+async function create(description){
   const result = await db.query(
     `INSERT INTO Description (fk_idProjet, fk_idLangue, description) VALUES ($1, $2, $3)`,
-    [id.fk_idProjet, id.fk_idLangue, description.description ]
+    [description.fk_idProjet, description.fk_idLangue, description.description ]
   );
 
   let message = 'Error in creating description';
