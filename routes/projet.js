@@ -12,10 +12,12 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-/* GET Projet spécifique*/
-router.get('/:id', async function(req, res, next) {
+/* GET Projet spécifique avec langue et collabers */
+router.get('/info/:id&lang=:lang', async function(req, res, next) {
   try {
-    res.json(await projet.getOne(req.params.id));
+    let rep = await projet.getInfo(parseInt(req.params.id), req.params.lang);
+    rep[0].collabers = await projet.getCollabers(parseInt(req.params.id));
+    res.json(rep[0]);
   } catch (err) {
     console.error(`Error while getting Projet`, err.message);
     next(err);
@@ -23,9 +25,9 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /* GET Projet spécifique*/
-router.get('/info/:id', async function(req, res, next) {
+router.get('/:id', async function(req, res, next) {
   try {
-    res.json(await projet.getInfo(parseInt(req.params.id), req.body.fk_idLangue));
+    res.json(await projet.getOne(req.params.id));
   } catch (err) {
     console.error(`Error while getting Projet`, err.message);
     next(err);

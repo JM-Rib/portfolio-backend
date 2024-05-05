@@ -5,6 +5,23 @@ async function getMultiple(){
   const rows = await db.query(
     `SELECT * FROM Projet`,
     []
+  ); 
+  return helper.emptyOrRows(rows);
+} 
+
+async function getList(){ 
+    const rows = await db.query(
+      `SELECT Projet.* FROM Projet;`,
+    []
+  );
+
+  return helper.emptyOrRows(rows);
+}
+
+async function getCollabers(id){
+  const rows = await db.query(
+    `SELECT Profil.* FROM Projet LEFT JOIN collab ON Projet.pk_idProjet = collab.fk_idProjet LEFT JOIN Profil ON collab.fk_idProfil = Profil.pk_idProfil WHERE Projet.pk_idProjet=$1 `,
+    [id]
   );
 
   return helper.emptyOrRows(rows);
@@ -75,9 +92,10 @@ async function remove(id){
 
 module.exports = {
   getMultiple,
+  getList,
+  getCollabers,
   getOne,
   getInfo,
-  getInfos,
   create,
   update,
   remove
