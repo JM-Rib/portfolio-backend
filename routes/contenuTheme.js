@@ -36,15 +36,21 @@ router.get('/:id&lang=:lang', async function(req, res, next) {
 
 /* POST un thème qui n'existe pas encore et ne possède aucun id */
 router.post('/&lang=:lang', async function(req, res, next) {
+  let rep_creation_id;
   try {
     // creation theme de l'id:
-    let rep_creation_id = await theme.create();
+    rep_creation_id = await theme.create();
     // creation liason
     res.json(await contenuTheme.create({fk_idTheme: rep_creation_id.result[0].pk_idtheme, fk_idLangue: req.params.lang, contenuTheme: req.body.contenuTheme}));
-    // gestion erreur si langue n'existe pas
   } catch (err) {
-    console.error(`Error while creating ContenuTheme`, err.message);
-    next(err);
+    if(err.code === "23503") { // gestion erreur si langue n'existe pas
+      console.error(`La langue choisie n'existe pas; Suppression du theme crée précedemment `, err.message);
+      await theme.remove(rep_creation_id.result[0].pk_idtheme)
+      res.status(500).json({message: "La langue choisie n'existe pas"});      
+    } else {
+      console.error(`Error while creating ContenuTheme`, err.message);
+      next(err);
+    }
   }
 });
 
