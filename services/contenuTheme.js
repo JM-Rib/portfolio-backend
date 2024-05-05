@@ -19,6 +19,15 @@ async function getOne(id){
   return helper.emptyOrRows(rows);
 }
 
+async function getOneAllLangs(id){
+  const rows = await db.query(
+    `SELECT fk_idLangue,contenuTheme FROM ContenuTheme WHERE fk_idTheme=$1`,
+    [id]
+  );
+
+  return helper.emptyOrRows(rows);
+}
+
 async function create(contenuTheme){
   const result = await db.query(
     `INSERT INTO ContenuTheme (fk_idTheme, fk_idLangue, contenuTheme) VALUES ($1, $2, $3)`,
@@ -67,6 +76,7 @@ async function remove(id){
 module.exports = {
   getMultiple,
   getOne,
+  getOneAllLangs,
   create,
   update,
   remove

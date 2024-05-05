@@ -1,11 +1,23 @@
 const express = require('express');
 const router = express.Router();
+const theme= require("../services/theme");
 const contenuTheme= require("../services/contenuTheme");
+const { create } = require('../services/profil');
 
 /* GET ContenuTheme */
 router.get('/', async function(req, res, next) {
   try {
     res.json(await contenuTheme.getMultiple(req.query.page));
+  } catch (err) {
+    console.error(`Error while getting ContenuTheme`, err.message);
+    next(err);
+  }
+});
+
+/* GET ContenuTheme tout languages */
+router.get('/:id', async function(req, res, next) {
+  try {
+    res.json(await contenuTheme.getOneAllLangs(req.params.id));
   } catch (err) {
     console.error(`Error while getting ContenuTheme`, err.message);
     next(err);
@@ -22,10 +34,24 @@ router.get('/:id&lang=:lang', async function(req, res, next) {
   }
 });
 
-/* POST Theme */
-router.post('/', async function(req, res, next) {
+/* POST un thème qui n'existe pas encore et ne possède aucun id */
+router.post('/&lang=:lang', async function(req, res, next) {
   try {
-    res.json(await contenuTheme.create(req.body));
+    // creation theme de l'id:
+    let rep_creation_id = await theme.create();
+    // creation liason
+    res.json(await contenuTheme.create({fk_idTheme: rep_creation_id.result[0].pk_idtheme, fk_idLangue: req.params.lang, contenuTheme: req.body.contenuTheme}));
+    // gestion erreur si langue n'existe pas
+  } catch (err) {
+    console.error(`Error while creating ContenuTheme`, err.message);
+    next(err);
+  }
+});
+
+/* POST ContenuTheme Translation (liaison avec un thème existant) */
+router.post('/traduction/:id&lang=:lang', async function(req, res, next) {
+  try {
+    res.json(await contenuTheme.create({fk_idTheme: req.params.id, fk_idLangue: req.params.lang, contenuTheme: req.body.contenuTheme}));
   } catch (err) {
     console.error(`Error while creating ContenuTheme`, err.message);
     next(err);

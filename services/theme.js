@@ -21,17 +21,10 @@ async function getOne(id){
 
 async function create(){
   const result = await db.query(
-    `INSERT INTO Theme DEFAULT VALUES`,
+    `INSERT INTO Theme DEFAULT VALUES RETURNING pk_idTheme`,
     []
   );
-
-  let message = 'Error in creating theme';
-
-  if (result) {
-    message = 'theme created successfully';
-  }
-
-  return {message};
+  return {result};
 }
 
 async function update(id, theme){
