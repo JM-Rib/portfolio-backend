@@ -10,6 +10,16 @@ async function getMultiple(){
   return helper.emptyOrRows(rows);
 }
 
+async function getMultipleSingleLang(id){
+  const rows = await db.query(
+    `SELECT fk_idTheme,contenuTheme FROM ContenuTheme WHERE fk_idLangue=$1`,
+    [id]
+  );
+
+  return helper.emptyOrRows(rows);
+}
+
+
 async function getOne(id){
   const rows = await db.query(
     `SELECT * FROM ContenuTheme WHERE fk_idTheme=$1 AND fk_idLangue=$2`,
@@ -77,6 +87,7 @@ module.exports = {
   getMultiple,
   getOne,
   getOneAllLangs,
+  getMultipleSingleLang,
   create,
   update,
   remove

@@ -14,6 +14,16 @@ router.get('/', async function(req, res, next) {
   }
 });
 
+/* GET tout les ContenuTheme d'une langue pour listing d'un dropdown */
+router.get('/&lang=:lang', async function(req, res, next) {
+  try {
+    res.json(await contenuTheme.getMultipleSingleLang(req.params.lang));
+  } catch (err) {
+    console.error(`Error while getting ContenuThemes`, err.message);
+    next(err);
+  }
+});
+
 /* GET ContenuTheme tout languages */
 router.get('/:id', async function(req, res, next) {
   try {
@@ -35,18 +45,26 @@ router.get('/:id&lang=:lang', async function(req, res, next) {
 });
 
 /* POST un thème qui n'existe pas encore et ne possède aucun id */
-router.post('/&lang=:lang', async function(req, res, next) {
+router.post('/', async function(req, res, next) {
   let rep_creation_id;
   try {
+    if( !isNaN(req.body.contenuTheme) ){
+      let erreurChiffre = new Error("Le libellé du thème est mal renseigné");
+      erreurChiffre.name = "erreurChiffre";
+      throw erreurChiffre;
+    }
     // creation theme de l'id:
     rep_creation_id = await theme.create();
     // creation liason
-    res.json(await contenuTheme.create({fk_idTheme: rep_creation_id.result[0].pk_idtheme, fk_idLangue: req.params.lang, contenuTheme: req.body.contenuTheme}));
+    await contenuTheme.create({fk_idTheme: rep_creation_id.result[0].pk_idtheme, fk_idLangue: req.body.fk_idLangue, contenuTheme: req.body.contenuTheme});
+    res.json({ message: "Thème crée avec succès"});
   } catch (err) {
-    if(err.code === "23503") { // gestion erreur si langue n'existe pas
+    if(err?.code === "23503" && err?.constraint==="contenutheme_fk_idlangue_fkey" ) { // gestion erreur si langue n'existe pas
       console.error(`La langue choisie n'existe pas; Suppression du theme crée précedemment `, err.message);
       await theme.remove(rep_creation_id.result[0].pk_idtheme)
       res.status(500).json({message: "La langue choisie n'existe pas"});      
+    } else if (err?.name === "erreurChiffre") {
+      res.status(500).json({message: err.message});      
     } else {
       console.error(`Error while creating ContenuTheme`, err.message);
       next(err);
@@ -55,12 +73,27 @@ router.post('/&lang=:lang', async function(req, res, next) {
 });
 
 /* POST ContenuTheme Translation (liaison avec un thème existant) */
-router.post('/traduction/:id&lang=:lang', async function(req, res, next) {
+router.post('/traduction', async function(req, res, next) {
   try {
-    res.json(await contenuTheme.create({fk_idTheme: req.params.id, fk_idLangue: req.params.lang, contenuTheme: req.body.contenuTheme}));
+    if( !isNaN(req.body.contenuTheme) ){
+      let erreurChiffre = new Error("Le libellé du thème est mal renseigné");
+      erreurChiffre.name = "erreurChiffre";
+      throw erreurChiffre;
+    }
+    res.json(await contenuTheme.create({fk_idTheme: req.body.fk_idTheme, fk_idLangue: req.body.fk_idLangue, contenuTheme: req.body.contenuTheme}));
   } catch (err) {
-    console.error(`Error while creating ContenuTheme`, err.message);
-    next(err);
+    if (err?.name === "erreurChiffre") {
+      res.status(500).json({message: err.message});      
+    } else if(err?.code === "23505" && err?.constraint === "contenutheme_pkey"){
+      res.status(500).json({message: "Une traduction pour ce thème existe déjà dans cette langue"});      
+    } else if(err?.code === "23503" && err?.constraint === "contenutheme_fk_idtheme_fkey"){
+      res.status(500).json({message: "Le thème sélectionné n'existe pas"});      
+    } else if(err?.code === "23503" && err?.constraint === "contenutheme_fk_idlangue_fkey"){
+      res.status(500).json({message: "La langue sélectionnée n'existe pas"});      
+    } else {
+      console.error(`Error while creating ContenuTheme`, err.message);
+      next(err);
+    }
   }
 });
 
