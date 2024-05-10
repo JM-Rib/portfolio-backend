@@ -51,6 +51,21 @@ async function update(id, collab){
 
 async function remove(id){
   const result = await db.query(
+    `DELETE FROM collab WHERE fk_idProjet=$1 AND fk_idProfil=$2`,
+    [id.fk_idProjet, id.fk_idProfil]
+  );
+
+  let message = 'Error in deleting collab';
+
+  if (result) {
+    message = 'collab deleted successfully';
+  }
+
+  return {message};
+}
+
+async function removeProjectTies(id){
+  const result = await db.query(
     `DELETE FROM collab WHERE fk_idProjet=$1`,
     [id]
   );
@@ -69,5 +84,6 @@ module.exports = {
   getOne,
   create,
   update,
-  remove
+  remove,
+  removeProjectTies
 }

@@ -64,10 +64,26 @@ async function remove(id){
   return {message};
 }
 
+async function removeProjectTies(id){
+  const result = await db.query(
+    `DELETE FROM problematique WHERE fk_idProjet=$1`,
+    [id] 
+  );
+
+  let message = 'Error in deleting problematique';
+
+  if (result) {
+    message = 'problematique deleted successfully';
+  }
+
+  return {message};
+}
+
 module.exports = {
   getMultiple,
   getOne,
   create,
   update,
-  remove
+  remove,
+  removeProjectTies
 }

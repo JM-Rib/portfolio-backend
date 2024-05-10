@@ -113,7 +113,11 @@ router.put('/:id', async function(req, res, next) {
 /* DELETE Projet */
 router.delete('/:id', async function(req, res, next) {
   try {
-    res.json(await projet.remove(req.params.id));
+    await collab.removeProjectTies(req.params.id);
+    await problematique.removeProjectTies(req.params.id);
+    await description.removeProjectTies(req.params.id);
+    await projet.remove(req.params.id);
+    res.status(200).json({message: "Projet supprimé avec succès"});      
   } catch (err) {
     console.error(`Error while deleting Projet`, err.message);
     next(err);

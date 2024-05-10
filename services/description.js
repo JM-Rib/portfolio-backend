@@ -58,10 +58,26 @@ async function remove(id){
   return {message};
 }
 
+async function removeProjectTies(id){
+  const result = await db.query(
+    `DELETE FROM Description WHERE fk_idProjet=$1`,
+    [id]
+  );
+
+  let message = 'Error in deleting description';
+
+  if (result) {
+    message = 'description deleted successfully';
+  }
+
+  return {message};
+}
+
 module.exports = {
   getMultiple,
   getOne,
   create,
   update,
-  remove
+  remove,
+  removeProjectTies
 }
