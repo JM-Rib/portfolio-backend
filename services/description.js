@@ -25,19 +25,13 @@ async function create(description){
     [description.fk_idProjet, description.fk_idLangue, description.description ]
   );
 
-  let message = 'Error in creating description';
-
-  if (result) {
-    message = 'description created successfully';
-  }
-
-  return {message};
+  return result;
 }
 
 async function update(id, description){
   const result = await db.query(
     `UPDATE Description SET Description.fk_idProjet=$1, Description.fk_idLangue=$2, Description.description=$3 WHERE Description.fk_idProjet=$4 AND Description.fk_idLangue=$5;`,
-    [description.pk_idDescription, description.fk_idLangue, description.description, id.fk_idProjet, id.fk_idLangue] 
+    [description.fk_idProjet, description.fk_idLangue, description.description, id.fk_idProjet, id.fk_idLangue] 
   );
 
   let message = 'Error in updating description';

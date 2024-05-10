@@ -51,8 +51,8 @@ async function update(id, problematique){
 
 async function remove(id){
   const result = await db.query(
-    `DELETE FROM problematique WHERE fk_idTheme=$1`,
-    [id]
+    `DELETE FROM problematique WHERE fk_idTheme=$1 AND fk_idProjet=$2`,
+    [id.fk_idTheme, id.fk_idProjet] 
   );
 
   let message = 'Error in deleting problematique';
