@@ -51,7 +51,7 @@ router.post('/', async function(req, res, next) {
     creation_projet = await projet.create({nomProjet: req.body.nomProjet, dateDebutProjet: req.body.dateDebutProjet,dateDerniereMaj: req.body.dateDerniereMaj, idGithub: req.body.idGithub, lienHosting: req.body.lienHosting});
     fk_idProjet = creation_projet[0].pk_idprojet;
     await description.create({fk_idProjet: fk_idProjet, fk_idLangue: req.body.fk_idLangue, description: req.body.description})
-    // pour chaque id de theme, creer liaisons au projet.
+    // pour chaque id de theme, creer liaisons au projet. Tout d'abord on vérifie l'existence des liens...
     let verifThemes = await theme.getMultiple().then( (r)=>{ let res=[]; r.map( (elem, j) => {res[j] = elem.pk_idtheme}); return res; } );
     for (let index = 0; index < req.body.themes.length; index++) {
       if(!verifThemes.includes(req.body.themes[index])){
@@ -103,10 +103,27 @@ router.post('/', async function(req, res, next) {
 /* PUT Projet */
 router.put('/:id', async function(req, res, next) {
   try {
-    res.json(await projet.update(req.params.id, req.body));
+    if(req.body.fk_idLangue === undefined || req.body.pk_idProjet === undefined){
+      let idmissing = new Error("Identifiant non renseigné");
+      idmissing.name = "idmissing";      
+      throw idmissing;
+    }
+    if(isNan(req.body.fk_idLangue) || isNaN(req.body.pk_idProjet)){
+      let idnan = new Error("Identifiant au mauvais format");
+      idnan.name = "idnan";      
+      throw idnan;
+    }
+    await projet.update(req.params.id, {fk_idProjet: req.body.fk_idProjet, nomProjet: req.body.nomProjet, dateDebutProjet: req.body.dateDebutProjet, dateDerniereMaj: req.body.dateDerniereMaj, idGithub: req.body.idGithub, lienHosting: req.body.lienHosting});
+    res.json(await description.update({fk_idProjet: req.params.id, fk_idLangue: req.body.fk_idLangue}, {fk_idProjet: req.body.pk_idProjet, fk_idLangue: req.body.fk_idLangue, description: req.body.description}));
   } catch (err) {
-    console.error(`Error while updating Projet`, err.message);
-    next(err);
+    if(err.name === "idmissing"){
+      res.status(500).json({message: err.message});
+    if(err.name === "idnan"){
+      res.status(500).json({message: err.message});
+    } else {
+      console.error(`Error while updating Projet`, err.message);
+      next(err);
+    }
   }
 });
 

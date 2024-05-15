@@ -56,7 +56,7 @@ async function create(projet){
 
 async function update(id, projet){
   const result = await db.query(
-    `UPDATE Projet SET Projet.pk_idProjet=$1, Projet.nomProjet=$2, Projet.dateDebutProjet=$3, Projet.dateDerniereMaj=$4, Projet.idGithub=$5, Projet.lienHosting=$6, WHERE Projet.pk_idProjet = $7;`,
+    `UPDATE Projet SET pk_idProjet=$1, nomProjet=$2, dateDebutProjet=$3, dateDerniereMaj=$4, idGithub=$5, lienHosting=$6 WHERE pk_idProjet=$7;`,
     [projet.pk_idProjet, projet.nomProjet, projet.dateDebutProjet, projet.dateDerniereMaj, projet.idGithub, projet.lienHosting, id] 
   );
 

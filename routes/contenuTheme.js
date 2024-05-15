@@ -61,7 +61,7 @@ router.post('/', async function(req, res, next) {
   } catch (err) {
     if(err?.code === "23503" && err?.constraint==="contenutheme_fk_idlangue_fkey" ) { // gestion erreur si langue n'existe pas
       console.error(`La langue choisie n'existe pas; Suppression du theme crée précedemment `, err.message);
-      await theme.remove(rep_creation_id.result[0].pk_idtheme)
+      await theme.remove(rep_creation_id.result[0].pk_idtheme); // On suppr l'id du contenuTheme.
       res.status(500).json({message: "La langue choisie n'existe pas"});      
     } else if (err?.name === "erreurChiffre") {
       res.status(500).json({message: err.message});      
@@ -97,7 +97,7 @@ router.post('/traduction', async function(req, res, next) {
   }
 });
 
-/* PUT ContenuTheme */
+/* PUT ContenuTheme traduction */
 router.put('/:id&lang=:lang', async function(req, res, next) {
   try {
     res.json(await contenuTheme.update({fk_idTheme : req.params.id, fk_idLangue: req.params.lang}, req.body));
@@ -108,10 +108,12 @@ router.put('/:id&lang=:lang', async function(req, res, next) {
 });
 
 /* DELETE ContenuTheme */
-router.delete('/:id&lang=:lang', async function(req, res, next) {
+router.delete('/:id', async function(req, res, next) {
   try {
-    res.json(await contenuTheme.remove({fk_idTheme : req.params.id, fk_idLangue: req.params.lang}));
+    await contenuTheme.removeThemeTies(req.params.id);
+    res.json(await theme.remove(req.params.id));
   } catch (err) {
+    res.status(500).json({message: "Erreur lors de la suppression du thème"});      
     console.error(`Error while deleting ContenuTheme`, err.message);
     next(err);
   }

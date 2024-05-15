@@ -83,6 +83,21 @@ async function remove(id){
   return {message};
 }
 
+async function removeThemeTies(id){
+  const result = await db.query(
+    `DELETE FROM ContenuTheme WHERE fk_idTheme=$1`,
+    [id]
+  );
+
+  let message = 'Error in deleting theme';
+
+  if (result) {
+    message = 'theme deleted successfully';
+  }
+
+  return {message};
+}
+
 module.exports = {
   getMultiple,
   getOne,

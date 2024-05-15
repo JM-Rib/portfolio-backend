@@ -30,7 +30,7 @@ async function create(description){
 
 async function update(id, description){
   const result = await db.query(
-    `UPDATE Description SET Description.fk_idProjet=$1, Description.fk_idLangue=$2, Description.description=$3 WHERE Description.fk_idProjet=$4 AND Description.fk_idLangue=$5;`,
+    `UPDATE Description SET fk_idProjet=$1, fk_idLangue=$2, description=$3 WHERE fk_idProjet=$4 AND fk_idLangue=$5;`,
     [description.fk_idProjet, description.fk_idLangue, description.description, id.fk_idProjet, id.fk_idLangue] 
   );
 
