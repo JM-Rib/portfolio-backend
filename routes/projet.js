@@ -125,6 +125,7 @@ router.put('/:id', async function(req, res, next) {
       next(err);
     }
   }
+}
 });
 
 /* DELETE Projet */

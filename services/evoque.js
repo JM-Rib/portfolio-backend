@@ -27,7 +27,7 @@ async function create(evoque){
 
   let message = 'Error in creating evoque';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'evoque created successfully';
   }
 
@@ -42,7 +42,7 @@ async function update(id, evoque){
 
   let message = 'Error in updating evoque';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'evoque updated successfully';
   }
 
@@ -57,7 +57,7 @@ async function remove(id){
 
   let message = 'Error in deleting evoque';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'evoque deleted successfully';
   }
 

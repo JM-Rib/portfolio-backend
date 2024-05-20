@@ -27,7 +27,7 @@ async function create(media){
 
   let message = 'Error in creating media';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'media created successfully';
   }
 
@@ -42,7 +42,7 @@ async function update(id, media){
 
   let message = 'Error in updating media';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'media updated successfully';
   }
 
@@ -57,7 +57,7 @@ async function remove(id){
 
   let message = 'Error in deleting media';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'media deleted successfully';
   }
 

@@ -41,7 +41,7 @@ async function create(admin){
 
   let message = 'Error in creating admin';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'admin created successfully';
   }
   return {message};
@@ -55,7 +55,7 @@ async function update(id, admin){
 
   let message = 'Error in updating admin';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'admin updated successfully';
   }
 
@@ -70,7 +70,7 @@ async function remove(id){
 
   let message = 'Error in deleting admin';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'admin deleted successfully';
   }
 
@@ -110,6 +110,21 @@ async function verifyToken(admin){ //ou "decoded"
   }
 }
 
+async function removeProfilTies(id){
+  const result = await db.query(
+    `DELETE FROM admin WHERE fk_idProfil=$1`,
+    [id]
+  );
+
+  let message = 'Error in deleting admin';
+
+  if (result.length > 0) {
+    message = 'admin deleted successfully';
+  }
+
+  return {message};
+}
+
 module.exports = {
   getMultiple,
   getOne,
@@ -119,4 +134,5 @@ module.exports = {
   signup,
   login,
   verifyToken,
+  removeProfilTies
 }

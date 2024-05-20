@@ -46,7 +46,7 @@ async function create(contenuTheme){
 
   let message = 'Error in creating theme';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'theme created successfully';
   }
 
@@ -61,7 +61,7 @@ async function update(id, contenuTheme){
 
   let message = 'Error in updating theme';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'theme updated successfully';
   }
 
@@ -76,7 +76,7 @@ async function remove(id){
 
   let message = 'Error in deleting theme';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'theme deleted successfully';
   }
 
@@ -91,7 +91,7 @@ async function removeThemeTies(id){
 
   let message = 'Error in deleting theme';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'theme deleted successfully';
   }
 

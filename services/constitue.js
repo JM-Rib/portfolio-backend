@@ -27,7 +27,7 @@ async function create(constitue){
 
   let message = 'Error in creating constitue';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'constitue created successfully';
   }
 
@@ -42,7 +42,7 @@ async function update(id, constitue){
 
   let message = 'Error in updating constitue';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'constitue updated successfully';
   }
 
@@ -57,7 +57,7 @@ async function remove(id){
 
   let message = 'Error in deleting constitue';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'constitue deleted successfully';
   }
 

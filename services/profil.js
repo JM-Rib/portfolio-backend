@@ -55,6 +55,8 @@ async function remove(id){
     [id]
   );
 
+  console.log(result);
+
   let message = 'Error in deleting profil';
 
   if (result) {

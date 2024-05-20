@@ -27,7 +27,7 @@ async function create(langue){
 
   let message = 'Error in creating langue';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'langue created successfully';
   }
 
@@ -42,7 +42,7 @@ async function update(id, langue){
 
   let message = 'Error in updating langue';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'langue updated successfully';
   }
 
@@ -57,7 +57,7 @@ async function remove(id){
 
   let message = 'Error in deleting langue';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'langue deleted successfully';
   }
 

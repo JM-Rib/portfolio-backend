@@ -36,7 +36,7 @@ async function update(id, description){
 
   let message = 'Error in updating description';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'description updated successfully';
   }
 
@@ -51,7 +51,7 @@ async function remove(id){
 
   let message = 'Error in deleting description';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'description deleted successfully';
   }
 
@@ -66,7 +66,7 @@ async function removeProjectTies(id){
 
   let message = 'Error in deleting description';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'description deleted successfully';
   }
 

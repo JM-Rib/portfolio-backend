@@ -27,7 +27,7 @@ async function create(article){
 
   let message = 'Error in creating article';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'article created successfully';
   }
 
@@ -42,7 +42,7 @@ async function update(id, article){
 
   let message = 'Error in updating article';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'article updated successfully';
   }
 
@@ -57,7 +57,7 @@ async function remove(id){
 
   let message = 'Error in deleting article';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'article deleted successfully';
   }
 

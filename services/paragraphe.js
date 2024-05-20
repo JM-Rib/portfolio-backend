@@ -27,7 +27,7 @@ async function create(paragraphe){
 
   let message = 'Error in creating paragraphe';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'paragraphe created successfully';
   }
 
@@ -42,7 +42,7 @@ async function update(id, paragraphe){
 
   let message = 'Error in updating paragraphe';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'paragraphe updated successfully';
   }
 
@@ -57,7 +57,7 @@ async function remove(id){
 
   let message = 'Error in deleting paragraphe';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'paragraphe deleted successfully';
   }
 

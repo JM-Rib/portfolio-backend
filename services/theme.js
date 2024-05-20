@@ -35,7 +35,7 @@ async function update(id, theme){
 
   let message = 'Error in updating theme';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'theme updated successfully';
   }
 
@@ -50,7 +50,7 @@ async function remove(id){
 
   let message = 'Error in deleting theme';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'theme deleted successfully';
   }
 

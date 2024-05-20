@@ -27,7 +27,7 @@ async function create(collab){
 
   let message = 'Error in creating collab';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'collab created successfully';
   }
 
@@ -42,7 +42,7 @@ async function update(id, collab){
 
   let message = 'Error in updating collab';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'collab updated successfully';
   }
 
@@ -57,7 +57,7 @@ async function remove(id){
 
   let message = 'Error in deleting collab';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'collab deleted successfully';
   }
 
@@ -72,7 +72,22 @@ async function removeProjectTies(id){
 
   let message = 'Error in deleting collab';
 
-  if (result) {
+  if (result.length > 0) {
+    message = 'collab deleted successfully';
+  }
+
+  return {message};
+}
+
+async function removeProfilTies(id){
+  const result = await db.query(
+    `DELETE FROM collab WHERE fk_idProfil=$1`,
+    [id]
+  );
+
+  let message = 'Error in deleting collab';
+
+  if (result.length > 0) {
     message = 'collab deleted successfully';
   }
 
@@ -85,5 +100,6 @@ module.exports = {
   create,
   update,
   remove,
-  removeProjectTies
+  removeProjectTies,
+  removeProfilTies
 }

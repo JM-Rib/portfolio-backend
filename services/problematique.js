@@ -27,7 +27,7 @@ async function create(problematique){
 
   let message = 'Error in creating problematique';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'problematique created successfully';
   }
 
@@ -42,7 +42,7 @@ async function update(id, problematique){
 
   let message = 'Error in updating problematique';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'problematique updated successfully';
   }
 
@@ -57,7 +57,7 @@ async function remove(id){
 
   let message = 'Error in deleting problematique';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'problematique deleted successfully';
   }
 
@@ -72,7 +72,7 @@ async function removeProjectTies(id){
 
   let message = 'Error in deleting problematique';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'problematique deleted successfully';
   }
 

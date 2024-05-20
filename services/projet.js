@@ -62,7 +62,7 @@ async function update(id, projet){
 
   let message = 'Error in updating projet';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'projet updated successfully';
   }
 
@@ -77,7 +77,7 @@ async function remove(id){
 
   let message = 'Error in deleting projet';
 
-  if (result) {
+  if (result.length > 0) {
     message = 'projet deleted successfully';
   }
 
