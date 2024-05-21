@@ -80,7 +80,7 @@ async function remove(id){
 async function signup(admin){
   const rows = await db.query(
     `INSERT INTO Admin (identifiant, mdp, fk_idProfil) VALUES ($1, $2, $3)`,
-    [admin.identifiantAdmin, admin.mdpAdmin, admin.fk_idProfil]  );
+    [admin.identifiant, admin.mdp, admin.fk_idProfil]  );
   const data = helper.emptyOrRows(rows);
 
   return {

@@ -33,7 +33,7 @@ router.get('/verify/', async function(req, res, next) {
     if (!result) {
       res.status(400).json(defaultReturnObject);
     }
-    delete result.mdpAdmin;
+    delete result.mdp;
     res.status(200).json({ authenticated: true, user: result });
   } catch (err) {
     console.error(`Error while logging in`, err.message);
@@ -84,16 +84,16 @@ router.delete('/:id', async function(req, res, next) {
 /* Signup Admin */
 router.post('/signup/', async function(req, res, next) {
   try {
-    const identifiantAdmin = req.body.identifiant;
-    const mdpAdmin = req.body.mdp;
+    const identifiant = req.body.identifiant;
+    const mdp = req.body.mdp;
 
-    if (!identifiantAdmin || !mdpAdmin || identifiantAdmin===undefined || mdpAdmin===undefined || identifiantAdmin==='' || mdpAdmin==='' ) {
+    if (!identifiant || !mdp || identifiant===undefined || mdp===undefined || identifiant==='' || mdp==='' ) {
       res.status(400).end();
     }
-    const hashedPassword = await bcrypt.hash(mdpAdmin, 8);
+    const hashedPassword = await bcrypt.hash(mdp, 8);
     const userData = {
-      identifiantAdmin,
-      mdpAdmin: hashedPassword,
+      identifiant,
+      mdp: hashedPassword,
       fk_idProfil: req.body.fk_idProfil
     };
 
@@ -110,10 +110,10 @@ router.post('/signup/', async function(req, res, next) {
 /* POST login Admin */
 router.post('/login/', async function(req, res, next) {
   try {
-    const identifiantAdmin = req.body.identifiant;
-    const mdpAdmin = req.body.mdp;
+    const identifiant = req.body.identifiant;
+    const mdp = req.body.mdp;
 
-    if (!identifiantAdmin || !mdpAdmin || identifiantAdmin==='' || mdpAdmin==='' ) {
+    if (!identifiant || !mdp || identifiant==='' || mdp==='' ) {
       res.status(403).end();
     }
     /* Appel bdd: */
@@ -121,14 +121,14 @@ router.post('/login/', async function(req, res, next) {
 
     /* on recup le mdp obtenu dans data, on le renomme, et on le compare a celui dans la base*/
     const hashedPassword = result.data[0].mdp;
-    const isMatch = await bcrypt.compare(mdpAdmin, hashedPassword);
+    const isMatch = await bcrypt.compare(mdp, hashedPassword);
     if (!isMatch) {
       res.status(403).end();
     }
     /*les mdp correspondent, on renvoie le token correspondant a l'utilisateur:*/
     const token = jwt.sign({
         pk_idAdmin: result.data[0].pk_idAdmin,
-        identifiantAdmin: result.data[0].identifiantAdmin
+        identifiant: result.data[0].identifiant
       },
         JWT_SECRET,
         { expiresIn: JWT_EXPIRES_IN }
