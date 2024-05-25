@@ -98,6 +98,7 @@ module.exports = {
   getList,
   getCollabers,
   getOne,
+  getAllDetails,
   getInfo,
   create,
   update,
