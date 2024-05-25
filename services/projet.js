@@ -36,6 +36,15 @@ async function getOne(id){
   return helper.emptyOrRows(rows);
 }
 
+async function getAllDetails(fk_idLangue){
+  const rows = await db.query(
+    `SELECT P.*, D.description, array_agg(CT.contenuTheme) AS Themes FROM Projet P LEFT JOIN Description D ON P.pk_idProjet = D.fk_idProjet LEFT JOIN problematique PR ON P.pk_idProjet = PR.fk_idProjet LEFT JOIN ContenuTheme CT ON PR.fk_idTheme = CT.fk_idTheme WHERE D.fk_idLangue=$1 AND CT.fk_idLangue=$1 GROUP BY P.pk_idProjet, D.description;`,
+    [fk_idLangue]
+  );
+
+  return helper.emptyOrRows(rows);
+}
+
 async function getInfo(id, fk_idLangue){
   const rows = await db.query(
     `SELECT P.*, D.description, array_agg(CT.contenuTheme) AS Themes FROM Projet P LEFT JOIN Description D ON P.pk_idProjet = D.fk_idProjet LEFT JOIN problematique PR ON P.pk_idProjet = PR.fk_idProjet LEFT JOIN ContenuTheme CT ON PR.fk_idTheme = CT.fk_idTheme WHERE P.pk_idProjet=$1 AND D.fk_idLangue=$2 AND CT.fk_idLangue=$2 GROUP BY P.pk_idProjet, D.description;`,

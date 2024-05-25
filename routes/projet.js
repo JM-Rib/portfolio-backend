@@ -17,6 +17,16 @@ router.get('/', async function(req, res, next) {
   }
 });
 
+/* GET ALL Projet details */
+router.get('/all&lang=:lang', async function(req, res, next) {
+  try {
+    res.json(await projet.getAllDetails(req.params.lang));
+  } catch (err) {
+    console.error(`Error while getting Projet`, err.message);
+    next(err);
+  }
+});
+
 /* GET Projet spécifique avec langue et collabers */
 router.get('/info/:id&lang=:lang', async function(req, res, next) {
   try {
