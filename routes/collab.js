@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const collab = require("../services/collab");
+const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
 /* GET collab */
 router.get('/', async function(req, res, next) {
@@ -23,7 +24,7 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /* POST collab */
-router.post('/', async function(req, res, next) {
+router.post('/', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await collab.create(req.body));
   } catch (err) {
@@ -33,7 +34,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* PUT collab */
-router.put('/:id', async function(req, res, next) {
+router.put('/:id', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await collab.update(req.params.id, req.body));
   } catch (err) {
@@ -43,7 +44,7 @@ router.put('/:id', async function(req, res, next) {
 });
 
 /* DELETE collab */
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await collab.remove(req.params.id));
   } catch (err) {

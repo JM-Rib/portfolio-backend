@@ -3,6 +3,7 @@ const router = express.Router();
 const theme= require("../services/theme");
 const contenuTheme= require("../services/contenuTheme");
 const { create } = require('../services/profil');
+const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
 /* GET ContenuTheme */
 router.get('/', async function(req, res, next) {
@@ -45,7 +46,7 @@ router.get('/:id&lang=:lang', async function(req, res, next) {
 });
 
 /* POST un thème qui n'existe pas encore et ne possède aucun id */
-router.post('/', async function(req, res, next) {
+router.post('/', authenticateJWT, async function(req, res, next) {
   let rep_creation_id;
   try {
     if( !isNaN(req.body.contenuTheme) ){
@@ -73,7 +74,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* POST ContenuTheme Translation (liaison avec un thème existant) */
-router.post('/traduction', async function(req, res, next) {
+router.post('/traduction', authenticateJWT, async function(req, res, next) {
   try {
     if( !isNaN(req.body.contenuTheme) ){
       let erreurChiffre = new Error("Le libellé du thème est mal renseigné");
@@ -98,7 +99,7 @@ router.post('/traduction', async function(req, res, next) {
 });
 
 /* PUT ContenuTheme traduction */
-router.put('/:id&lang=:lang', async function(req, res, next) {
+router.put('/:id&lang=:lang', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await contenuTheme.update({fk_idTheme : req.params.id, fk_idLangue: req.params.lang}, req.body));
   } catch (err) {
@@ -108,7 +109,7 @@ router.put('/:id&lang=:lang', async function(req, res, next) {
 });
 
 /* DELETE ContenuTheme */
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', authenticateJWT, async function(req, res, next) {
   try {
     await contenuTheme.removeThemeTies(req.params.id);
     res.json(await theme.remove(req.params.id));

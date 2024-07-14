@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const theme = require("../services/theme");
+const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
 /* GET Theme */
 router.get('/', async function(req, res, next) {
@@ -23,7 +24,7 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /* POST Theme */
-router.post('/', async function(req, res, next) {
+router.post('/', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await theme.create());
   } catch (err) {
@@ -33,7 +34,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* PUT Theme */
-router.put('/:id', async function(req, res, next) {
+router.put('/:id', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await theme.update(req.params.id, req.body));
   } catch (err) {
@@ -43,7 +44,7 @@ router.put('/:id', async function(req, res, next) {
 });
 
 /* DELETE Theme */
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await theme.remove(req.params.id));
   } catch (err) {

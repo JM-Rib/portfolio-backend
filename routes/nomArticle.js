@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const nomArticle= require("../services/nomArticle");
+const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
 /* GET NomArticle */
 router.get('/', async function(req, res, next) {
@@ -23,7 +24,7 @@ router.get('/:id&lang=:lang', async function(req, res, next) {
 });
 
 /* POST Theme */
-router.post('/', async function(req, res, next) {
+router.post('/', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await nomArticle.create(req.body));
   } catch (err) {
@@ -33,7 +34,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* PUT NomArticle */
-router.put('/:id&lang=:lang', async function(req, res, next) {
+router.put('/:id&lang=:lang',authenticateJWT, async function(req, res, next) {
   try {
     res.json(await nomArticle.update({fk_idArticle : req.params.id, fk_idLangue: req.params.lang}, req.body));
   } catch (err) {
@@ -43,7 +44,7 @@ router.put('/:id&lang=:lang', async function(req, res, next) {
 });
 
 /* DELETE NomArticle */
-router.delete('/:id&lang=:lang', async function(req, res, next) {
+router.delete('/:id&lang=:lang',authenticateJWT, async function(req, res, next) {
   try {
     res.json(await nomArticle.remove({fk_idArticle : req.params.id, fk_idLangue: req.params.lang}));
   } catch (err) {

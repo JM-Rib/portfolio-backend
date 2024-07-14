@@ -6,6 +6,7 @@ const description = require("../services/description");
 const collab = require("../services/collab");
 const theme = require("../services/theme");
 const profil = require("../services/profil");
+const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
 /* GET Projet */
 router.get('/', async function(req, res, next) {
@@ -50,7 +51,7 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /* POST Projet */
-router.post('/', async function(req, res, next) {
+router.post('/', authenticateJWT, async function(req, res, next) {
   let creation_projet;
   let fk_idProjet; 
   try {
@@ -111,7 +112,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* PUT Projet */
-router.put('/:id', async function(req, res, next) {
+router.put('/:id', authenticateJWT, async function(req, res, next) {
   try {
     if(req.body.fk_idLangue === undefined || req.body.pk_idProjet === undefined){
       let idmissing = new Error("Identifiant non renseigné");
@@ -139,7 +140,7 @@ router.put('/:id', async function(req, res, next) {
 });
 
 /* DELETE Projet */
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', authenticateJWT, async function(req, res, next) {
   try {
     await collab.removeProjectTies(req.params.id);
     await problematique.removeProjectTies(req.params.id);

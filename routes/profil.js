@@ -3,6 +3,7 @@ const router = express.Router();
 const profil = require("../services/profil");
 const collab = require("../services/collab");
 const admin = require("../services/admin");
+const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
 /* GET Profil */
 router.get('/', async function(req, res, next) {
@@ -25,7 +26,7 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /* POST Profil */
-router.post('/', async function(req, res, next) {
+router.post('/', authenticateJWT, async function(req, res, next) {
   try {
     console.log(req.body);
     if(
@@ -52,7 +53,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* PUT Profil */
-router.put('/:id', async function(req, res, next) {
+router.put('/:id',authenticateJWT, async function(req, res, next) {
   try {
     if(isNaN(req.params.id) || isNaN(req.body.fk_idProfil)){
       let erreur = new Error("Un des identifiants n'est pas un chiffre");
@@ -72,7 +73,7 @@ router.put('/:id', async function(req, res, next) {
 });
 
 /* DELETE Profil */
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', authenticateJWT, async function(req, res, next) {
   try {
     //suppression profil ties in compte admin
     await admin.removeProfilTies(req.params.id);

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const media = require("../services/media");
+const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
 /* GET Media */
 router.get('/', async function(req, res, next) {
@@ -23,7 +24,7 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /* POST Media */
-router.post('/', async function(req, res, next) {
+router.post('/', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await media.create(req.body));
   } catch (err) {
@@ -33,7 +34,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* PUT Media */
-router.put('/:id', async function(req, res, next) {
+router.put('/:id', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await media.update(req.params.id, req.body));
   } catch (err) {
@@ -43,7 +44,7 @@ router.put('/:id', async function(req, res, next) {
 });
 
 /* DELETE Media */
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await media.remove(req.params.id));
   } catch (err) {

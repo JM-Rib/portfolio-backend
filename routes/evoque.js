@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const evoque = require("../services/evoque");
+const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
 /* GET evoque */
 router.get('/', async function(req, res, next) {
@@ -23,7 +24,7 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /* POST evoque */
-router.post('/', async function(req, res, next) {
+router.post('/', authenticateJWT, async function(req, res, next) {
   try {
     res.json(await evoque.create(req.body));
   } catch (err) {
@@ -33,7 +34,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* PUT evoque */
-router.put('/:id', async function(req, res, next) {
+router.put('/:id',authenticateJWT, async function(req, res, next) {
   try {
     res.json(await evoque.update(req.params.id, req.body));
   } catch (err) {
@@ -43,7 +44,7 @@ router.put('/:id', async function(req, res, next) {
 });
 
 /* DELETE evoque */
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id',authenticateJWT, async function(req, res, next) {
   try {
     res.json(await evoque.remove(req.params.id));
   } catch (err) {

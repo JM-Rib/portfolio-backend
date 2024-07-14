@@ -9,16 +9,16 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { log } = require('console');
 
-/* GET Admin */
-router.get('/', async function(req, res, next) {
-  try {
-    res.json(await admin.getMultiple(req.query.page));
-  } catch (err) {
-    console.error(`Error while getting Admin`, err.message);
-    next(err);
-  }
-});
-
+// /* GET Admin */
+// router.get('/', async function(req, res, next) {
+//   try {
+//     res.json(await admin.getMultiple(req.query.page));
+//   } catch (err) {
+//     console.error(`Error while getting Admin`, err.message);
+//     next(err);
+//   }
+// });
+// 
 /* verify token avant le get one car node confond
  la route verify avec un id d'admin */
 /* GET user token Admin */
@@ -40,47 +40,47 @@ router.get('/verify/', async function(req, res, next) {
     res.status(400).send({ error: true, message: err.message });
   }
 });
-
-/* GET Admin spécifique*/
-router.get('/:id', async function(req, res, next) {
-  try {
-    res.json(await admin.getOne(req.params.id));
-  } catch (err) {
-    console.error(`Error while getting Admin`, err.message);
-    next(err);
-  }
-});
-
-/* POST Admin */
-router.post('/', async function(req, res, next) {
-  try {
-    res.json(await admin.create(req.body));
-  } catch (err) {
-    console.error(`Error while creating Admin`, err.message);
-    next(err);
-  }
-});
-
-/* PUT Admin */
-router.put('/:id', async function(req, res, next) {
-  try {
-    res.json(await admin.update(req.params.id, req.body));
-  } catch (err) {
-    console.error(`Error while updating Admin`, err.message);
-    next(err);
-  }
-});
-
-/* DELETE Admin */
-router.delete('/:id', async function(req, res, next) {
-  try {
-    res.json(await admin.remove(req.params.id));
-  } catch (err) {
-    console.error(`Error while deleting Admin`, err.message);
-    next(err);
-  }
-});
-
+ 
+// /* GET Admin spécifique*/
+// router.get('/:id', async function(req, res, next) {
+//   try {
+//     res.json(await admin.getOne(req.params.id));
+//   } catch (err) {
+//     console.error(`Error while getting Admin`, err.message);
+//     next(err);
+//   }
+// });
+// 
+// /* POST Admin */
+// router.post('/', async function(req, res, next) {
+//   try {
+//     res.json(await admin.create(req.body));
+//   } catch (err) {
+//     console.error(`Error while creating Admin`, err.message);
+//     next(err);
+//   }
+// });
+// 
+// /* PUT Admin */
+// router.put('/:id', async function(req, res, next) {
+//   try {
+//     res.json(await admin.update(req.params.id, req.body));
+//   } catch (err) {
+//     console.error(`Error while updating Admin`, err.message);
+//     next(err);
+//   }
+// });
+// 
+// /* DELETE Admin */
+// router.delete('/:id', async function(req, res, next) {
+//   try {
+//     res.json(await admin.remove(req.params.id));
+//   } catch (err) {
+//     console.error(`Error while deleting Admin`, err.message);
+//     next(err);
+//   }
+// });
+// 
 /* Signup Admin */
 router.post('/signup/', async function(req, res, next) {
   try {
@@ -94,7 +94,6 @@ router.post('/signup/', async function(req, res, next) {
     const userData = {
       identifiant,
       mdp: hashedPassword,
-      fk_idProfil: req.body.fk_idProfil
     };
 
     const result = await admin.signup(userData);
