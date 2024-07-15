@@ -3,16 +3,6 @@ const router = express.Router();
 const problematique = require("../services/problematique");
 const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
-/* GET problematique */
-router.get('/', async function(req, res, next) {
-  try {
-    res.json(await problematique.getMultiple(req.query.page));
-  } catch (err) {
-    console.error(`Error while getting problematique`, err.message);
-    next(err);
-  }
-});
-
 /* GET problematique spécifique*/
 router.get('/:id', async function(req, res, next) {
   try {

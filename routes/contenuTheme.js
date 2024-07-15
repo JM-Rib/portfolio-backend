@@ -5,16 +5,6 @@ const contenuTheme= require("../services/contenuTheme");
 const { create } = require('../services/profil');
 const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
-/* GET ContenuTheme */
-router.get('/', async function(req, res, next) {
-  try {
-    res.json(await contenuTheme.getMultiple(req.query.page));
-  } catch (err) {
-    console.error(`Error while getting ContenuTheme`, err.message);
-    next(err);
-  }
-});
-
 /* GET tout les ContenuTheme d'une langue pour listing d'un dropdown */
 router.get('/&lang=:lang', async function(req, res, next) {
   try {

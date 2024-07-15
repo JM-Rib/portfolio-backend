@@ -114,12 +114,12 @@ router.post('/', authenticateJWT, async function(req, res, next) {
 /* PUT Projet */
 router.put('/:id', authenticateJWT, async function(req, res, next) {
   try {
-    if(req.body.fk_idLangue === undefined || req.body.pk_idProjet === undefined){
+    if(req.body.fk_idLangue === undefined || req.body.pk_idProjet === undefined){
       let idmissing = new Error("Identifiant non renseigné");
       idmissing.name = "idmissing";      
       throw idmissing;
     }
-    if(isNan(req.body.fk_idLangue) || isNaN(req.body.pk_idProjet)){
+    if(isNan(req.body.fk_idLangue) || isNaN(req.body.pk_idProjet)){
       let idnan = new Error("Identifiant au mauvais format");
       idnan.name = "idnan";      
       throw idnan;

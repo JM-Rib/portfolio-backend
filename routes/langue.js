@@ -3,7 +3,7 @@ const router = express.Router();
 const langue = require("../services/langue");
 const authenticateJWT = require('../middlewares/authMiddleware'); // Adjust the path to the middleware
 
-/* GET Langue */
+/* GET Langues */
 router.get('/', async function(req, res, next) {
   try {
     res.json(await langue.getMultiple(req.query.page));
