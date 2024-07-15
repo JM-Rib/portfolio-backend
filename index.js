@@ -14,16 +14,10 @@ const port = process.env.APP_PORT;
 const profilRouter = require("./routes/profil");
 const adminRouter = require("./routes/admin");
 const projetRouter = require("./routes/projet");
-const articleRouter = require("./routes/article");
-const paragrapheRouter = require("./routes/paragraphe");
-const mediaRouter = require("./routes/media");
-const constitueRouter = require("./routes/constitue");
 const descriptionRouter = require("./routes/description");
 const langueRouter = require("./routes/langue");
 const themeRouter = require("./routes/theme");
 const contenuThemeRouter = require("./routes/contenuTheme");
-const nomArticleRouter = require("./routes/nomArticle");
-const evoqueRouter = require("./routes/evoque");
 const problematiqueRouter = require("./routes/problematique");
 const collabRouter = require("./routes/collab");
 
@@ -42,16 +36,10 @@ app.get("/", (req, res) => {
 app.use("/profil", profilRouter);
 app.use("/admin", adminRouter);
 app.use("/projet", projetRouter);
-app.use("/article", articleRouter);
-app.use("/paragraphe", paragrapheRouter);
-app.use("/media", mediaRouter);
-app.use("/constitue", constitueRouter);
 app.use("/description", descriptionRouter);
 app.use("/langue", langueRouter);
 app.use("/theme", themeRouter);
 app.use("/contenuTheme", contenuThemeRouter);
-app.use("/nomArticle", nomArticleRouter);
-app.use("/evoque", evoqueRouter);
 app.use("/problematique", problematiqueRouter);
 app.use("/collab", collabRouter);
 
