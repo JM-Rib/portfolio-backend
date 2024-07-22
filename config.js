@@ -10,7 +10,7 @@ const config = {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       port: process.env.DB_PORT,
-      ssl: true
+      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 //      timezone: '+02:00' //<-- here
     },
     listPerPage: 10,

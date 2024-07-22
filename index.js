@@ -4,11 +4,14 @@ const helmet = require("helmet");
 require('dotenv').config();
 
 const corsOptions ={
-//    origin:'http://localhost:3000', 
-    origin:'*', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
-}
+  //    origin:'http://localhost:3000', 
+      origin: [
+        process.env.CLIENT_URL, 
+        process.env.CLIENT_URL_WWW 
+      ],
+      credentials:true,            //access-control-allow-credentials:true
+      optionSuccessStatus:200
+  }
 const app = express();
 const port = process.env.APP_PORT;
 const profilRouter = require("./routes/profil");
