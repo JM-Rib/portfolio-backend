@@ -47,7 +47,7 @@ async function getAllDetails(codelangue){
 
 async function getInfo(id, codelangue){
   const rows = await db.query(
-    `SELECT P.*, D.description, array_agg(CT.contenuTheme) AS Themes FROM Projet P LEFT JOIN Description D ON P.pk_idProjet = D.fk_idProjet LEFT JOIN Langue L ON D.fk_idLangue = L.pk_idLangue  LEFT JOIN problematique PR ON P.pk_idProjet = PR.fk_idProjet LEFT JOIN ContenuTheme CT ON PR.fk_idTheme = CT.fk_idTheme LEFT JOIN Langue LG ON CT.fk_idLangue = LG.pk_idLangue WHERE P.pk_idProjet=$1 AND L.codelangue=$2 GROUP BY P.pk_idProjet, D.description;`,
+    `SELECT P.*, D.description, array_agg(CT.contenuTheme) AS Themes FROM Projet P LEFT JOIN Description D ON P.pk_idProjet = D.fk_idProjet LEFT JOIN Langue L ON D.fk_idLangue = L.pk_idLangue  LEFT JOIN problematique PR ON P.pk_idProjet = PR.fk_idProjet LEFT JOIN ContenuTheme CT ON PR.fk_idTheme = CT.fk_idTheme LEFT JOIN Langue LG ON CT.fk_idLangue = LG.pk_idLangue WHERE P.pk_idProjet=$1 AND L.codelangue=$2 AND LG.codelangue=$2 GROUP BY P.pk_idProjet, D.description;`,
     [id, codelangue]
 
   );
